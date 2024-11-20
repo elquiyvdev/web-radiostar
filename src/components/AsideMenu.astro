@@ -1,0 +1,35 @@
+---
+import HomeIcon from "../icons/Home.astro"
+import RadioStarIcon from "../icons/LogoRadioStar.astro"
+import LocutoresIcon from "../icons/LocutoresIcon.astro"
+import ProgramaIcon from "../icons/ProgramaIcon.astro"
+import AboutIcon from "../icons/AboutIcon.astro"
+
+import SideMenuItem from "./SideMenuItem.astro"
+---
+<nav class="flex flex-col flex-1 gap-2 py-10 px-4">
+    <div class="items-center">
+        <div class="mb-10">
+            <RadioStarIcon/>
+        </div>
+        <ul class="flex flex-col justify-center px-5 gap-y-6">
+            <SideMenuItem href="/">
+                <HomeIcon/>
+                INICIO
+            </SideMenuItem>
+            <SideMenuItem href="/programas">
+                <ProgramaIcon/>
+                PROGRAMAS
+            </SideMenuItem>
+            <SideMenuItem href="/">
+                <LocutoresIcon/>
+                LOCUTORES
+            </SideMenuItem>
+            <SideMenuItem href="/">
+                <AboutIcon/>
+                NOSOTROS
+            </SideMenuItem>
+        </ul>
+    </div>
+
+</nav>

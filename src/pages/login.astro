@@ -1,0 +1,18 @@
+---
+import Guest from '../layouts/Guest.astro';
+import LoginForm from '../components/auth/auth-login.jsx';
+import LogoRadioStar from '../icons/LogoRadioStar.astro';
+---
+
+<Guest title='Login'>
+    <div class="h-screen max-w-md mx-auto content-center px-6">
+        <div class="w-auto ">
+          <LogoRadioStar/>
+        </div>
+       <div>
+          <LoginForm client:load/>
+       </div>
+       
+    </div>
+    
+</Guest>

@@ -3,59 +3,22 @@ interface Props {
 	title: string;
 	body: string;
 	href: string;
+	image : string;
 }
 
-const { href, title, body } = Astro.props;
+const { image, href, title, body } = Astro.props;
 ---
 
-<li class="link-card">
-	<a href={href}>
-		<h2>
+<a href={href} 
+   class="programs-item transition-all duration-300 flex relative p-2 overflow-hidden gap-2
+   rounded-lg hover:bg-zinc-800 shadow-lg hover:shadow-xl bg-zinc-900 w-auto flex-col">
+	<picture class="aspect-square w-full h-auto flex-none">
+		<img src={image} alt={title} class="object-cover w-full h-full rounded-md"/>
+	</picture>
+	<div class="flex flex-auto flex-col items-start">
+		<h4 class="text-white text-sm">
 			{title}
-			<span>&rarr;</span>
-		</h2>
-		<p>
-			{body}
-		</p>
-	</a>
-</li>
-<style>
-	.link-card {
-		list-style: none;
-		display: flex;
-		padding: 1px;
-		background-color: #23262d;
-		background-image: none;
-		background-size: 400%;
-		border-radius: 7px;
-		background-position: 100%;
-		transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-	}
-	.link-card > a {
-		width: 100%;
-		text-decoration: none;
-		line-height: 1.4;
-		padding: calc(1.5rem - 1px);
-		border-radius: 8px;
-		color: white;
-		background-color: #23262d;
-		opacity: 0.8;
-	}
-	h2 {
-		margin: 0;
-		font-size: 1.25rem;
-		transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-	}
-	p {
-		margin-top: 0.5rem;
-		margin-bottom: 0;
-	}
-	.link-card:is(:hover, :focus-within) {
-		background-position: 0;
-		background-image: var(--accent-gradient);
-	}
-	.link-card:is(:hover, :focus-within) h2 {
-		color: rgb(var(--accent-light));
-	}
-</style>
+		</h4>
+		<span class="text-xs text-gray-400">Artista</span>
+	</div>
+</a>

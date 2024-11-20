@@ -1,0 +1,14 @@
+---
+// src/pages/index.astro
+
+import LivePlayer from '../components/LivePlayer.jsx';
+import Cabecera from '../components/Cabecera.astro';
+import Layout from "../layouts/Layout.astro"
+
+const streamUrl = "http://192.168.0.108/dash/test.mpd"; // Reemplaza con la URL de tu transmisión en vivo
+---
+
+<Layout title='Stream Radio'>
+    <Cabecera title='Hola a Programas'/>
+    <LivePlayer streamUrl={streamUrl} client:load />
+</Layout>

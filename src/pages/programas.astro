@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Cabecera from '../components/Cabecera.astro';
+import Card from '../components/Card.astro';
+
+interface Programa {
+    id: number;
+    nombre: string;
+	slug: string;
+    descripcion: string;
+    genero_id: number;
+    imagen: string;
+    estado: number;
+    created_at: string | null;
+    updated_at: string | null;
+    genero: {
+        id: number;
+        nombre: string;
+        descripcion: string;
+        created_at: string | null;
+        updated_at: string | null;
+    };
+}
+
+const response = await fetch("http://127.0.0.1:8000/api/programas");
+const result = await response.json();
+
+const programas: Programa[] = result.data || [];
+---
+
+<Layout title="Radio Star Programas">
+    <Cabecera title="Hola a Programas" />
+
+    <div class="relative z-10 px-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 mt-6 gap-4">
+            {programas.map((programa: Programa) => (
+                <Card 
+                    title={programa.nombre} 
+                    body={programa.descripcion || 'Sin descripción disponible'} 
+                    href={`/programas/${programa.slug}`} 
+                    image={`/source/images/${programa.imagen}` || '/source/images/default.png'} 
+                />
+            ))}
+        </div>
+    </div>
+</Layout>

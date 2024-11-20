@@ -1,0 +1,111 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+export interface Programa {
+    id:                number;
+    nombre:            string;
+    slug:              string;
+    descripcion:       string;
+    genero_id:         number;
+    imagen:            string;
+    estado:            number;
+    created_at:        null;
+    updated_at:        null;
+    genero:            Genero;
+    detalle_programas: DetallePrograma[];
+    horarios:          Horario[];
+}
+
+export interface DetallePrograma {
+    id:              number;
+    programa_id:     number;
+    presentadore_id: number;
+    horario_id:      number;
+    created_at:      null;
+    updated_at:      null;
+    presentador:     Presentador;
+}
+
+export interface Presentador {
+    id:         number;
+    nombre:     string;
+    apellido:   string;
+    sobre:      null;
+    foto:       string;
+    email:      string;
+    created_at: null;
+    updated_at: null;
+}
+
+export interface Genero {
+    id:          number;
+    nombre:      string;
+    descripcion: string;
+    created_at:  null;
+    updated_at:  null;
+}
+
+export interface Horario {
+    id:          number;
+    programa_id: number;
+    dias:        string;
+    hora_inicio: string;
+    hora_fin:    string;
+    estado:      number;
+    created_at:  null;
+    updated_at:  null;
+}
+
+// Get the slug parameter from Astro
+const { slug } = Astro.params;
+
+// State to store the program data
+let programa: Programa;
+
+// Fetch data from the API
+const fetchProgramas = async () => {
+  const response = await fetch('http://127.0.0.1:8000/api/programas');
+  const data = await response.json();
+  if (data.success) {
+    return data.data;
+  }
+  throw new Error("Failed to fetch programs");
+};
+
+// Load the program details
+let programas = await fetchProgramas();
+programa = programas.find((programa:Programa) => programa.slug === slug);
+
+if (!programa) {
+  return Astro.redirect("/404");
+}
+
+const { nombre, descripcion, imagen, genero, detalle_programas, horarios } = programa;
+---
+<Layout title={nombre}>
+  <h1>{nombre}</h1>
+  <img src={`/source/images/${imagen}`} alt={`Imagen del programa ${nombre}`} />
+  <p>{descripcion}</p>
+  <h2>Género</h2>
+  <p>{genero.nombre} - {genero.descripcion}</p>
+
+  <h2>Presentadores</h2>
+  <ul>
+    {detalle_programas.map(({ presentador }) => (
+      <li>
+        <img src={presentador.foto} alt={presentador.nombre} width="50" />
+        <strong>{presentador.nombre} {presentador.apellido}</strong> ({presentador.sobre})
+      </li>
+    ))}
+  </ul>
+
+  <h2>Horarios</h2>
+  <ul>
+    {horarios.map(({ dias, hora_inicio, hora_fin }) => (
+      <li>
+        <strong>Días:</strong> {JSON.parse(dias).join(", ")} <br />
+        <strong>Horario:</strong> {hora_inicio} - {hora_fin}
+      </li>
+    ))}
+  </ul>
+</Layout>

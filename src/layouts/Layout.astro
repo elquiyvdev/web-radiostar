@@ -1,4 +1,8 @@
 ---
+import AsideMenu from '../components/AsideMenu.astro';
+import {Player} from '../components/Player.jsx';
+import { ViewTransitions } from 'astro:transitions';
+
 interface Props {
 	title: string;
 }
@@ -15,36 +19,61 @@ const { title } = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<ViewTransitions />
 	</head>
 	<body>
-		<slot />
+		<div id="add" class="sm:flex h-screen w-screen gap-2">
+			<button data-drawer-target="cta-button-sidebar" data-drawer-toggle="cta-button-sidebar" aria-controls="cta-button-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+				<span class="sr-only">Open sidebar</span>
+				<svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+				<path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+				</svg>
+			</button>
+			<aside id="cta-button-sidebar" class="fixed top-0 left-0 z-40 w-full h-screen transition-transform -translate-x-full sm:translate-x-0 sm:relative sm:basis-1/4 sm:z-10 overflow-y-auto bg-gray-950 drop-shadow-2xl rounded-lg">
+				<AsideMenu />
+			</aside>
+			<main class="basis-3/4 w-full rounded-lg overflow-y-scroll hide-scrollbar">
+				<slot/>
+			</main>
+			
+				<Player client:load transition:name="media-player" transition:persist/>
+			</footer>
+		</div>
 	</body>
+	<script>
+		document.addEventListener('DOM', () => {
+		  const toggleButton = document.querySelector('[data-drawer-toggle="cta-button-sidebar"]');
+		  const sidebar = document.getElementById('cta-button-sidebar');
+	  
+		  if (toggleButton && sidebar) {
+			toggleButton.addEventListener('click', () => {
+			  if (sidebar.classList.contains('-translate-x-full')) {
+				sidebar.classList.remove('-translate-x-full');
+			  } else {
+				sidebar.classList.add('-translate-x-full');
+			  }
+			});
+		  }
+		});
+	  </script>
+	  
 </html>
+<style>
+	
+	
+</style>
 <style is:global>
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(
-			45deg,
-			rgb(var(--accent)),
-			rgb(var(--accent-light)) 30%,
-			white 60%
-		);
-	}
 	html {
 		font-family: system-ui, sans-serif;
-		background: #13151a;
+		background: #ffffff;
+		height: 100%;
 	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
+
+	.hide-scrollbar {
+    scrollbar-width: none; /* Oculta scrollbar en Firefox */
+    -ms-overflow-style: none; /* Oculta scrollbar en IE y Edge */
+	}
+	.hide-scrollbar::-webkit-scrollbar {
+		display: none; /* Oculta scrollbar en Chrome, Safari y Edge */
 	}
 </style>
